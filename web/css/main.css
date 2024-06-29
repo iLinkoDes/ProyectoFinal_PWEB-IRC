@@ -1,0 +1,19 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 29 jun 2024, 09:30:29
+    Author     : iLeLi
+*/
+
+
+.login-body {
+    background-image: url('https://img.freepik.com/premium-photo/blank-brown-wooden-table-front-blurred-market-background_32771-267.jpg?w=996'); 
+    background-repeat: no-repeat; 
+    background-size: 100%
+}
+
+.login-card {
+    background-color: #cccccc;
+}
