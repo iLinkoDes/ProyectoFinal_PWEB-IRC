@@ -26,7 +26,7 @@
                           <p class="text-left">Contraseña:</p>
                           <input type="password" name="contra" class="form-control border border-dark">
                       </div>
-                      <input type="submit" name="entrar" value="Entrar" class="btn btn-primary mt-3">
+                      <input type="submit" name="accion" value="Entrar" class="btn btn-primary mt-3">
                   </form>
                   
               </div>

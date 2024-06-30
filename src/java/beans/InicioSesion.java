@@ -11,6 +11,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import Objetos.EmpleadoDAO;
+import Objetos.Empleado;
+import javax.servlet.http.Cookie;
 
 /**
  *
@@ -28,6 +31,10 @@ public class InicioSesion extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+    Empleado empleado = new Empleado();
+    
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -71,15 +78,47 @@ public class InicioSesion extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        String accion=request.getParameter("entrar");
-        if (accion.equalsIgnoreCase("Entrar")){
+        String accion = request.getParameter("accion");
+        
+        /*try (PrintWriter out = response.getWriter()) {
+             TODO output your page here. You may use following sample code. 
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet InicioSesion</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<p>"+empleado != null && empleado.getUsuario() != null+"</p>");
+            
+            //out.println("<h1>Servlet InicioSesion at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }*/
+        
+        //request.getRequestDispatcher("Controlador").forward(request, response);
+        
+        if (accion != null && accion.equalsIgnoreCase("Entrar")) {
             String user = request.getParameter("usuario");
-            String usuario = request.getParameter("contra");
+            String contra = request.getParameter("contra");
             
-        } 
-        else {
+            Empleado empleado = empleadoDAO.verificar(user, contra);
             
+                if (empleado != null && empleado.getUsuario() != null) {
+                    request.setAttribute("usuario",empleado);
+                    request.setAttribute("apellidos",empleado);
+                    String cookieName = "Sesion";
+                    Cookie Sesion = new Cookie(cookieName, request.getParameter("usuario"));
+                    Sesion.setMaxAge(60*60*1);
+                    response.addCookie(Sesion);
+                request.getRequestDispatcher("Main.jsp").forward(request, response);
+                return;
+                
+            } else {
+                request.setAttribute("error", "Usuario o contraseña incorrecta.");
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            }
+        } else {
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
     }
 

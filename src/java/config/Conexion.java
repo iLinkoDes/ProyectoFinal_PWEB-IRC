@@ -6,22 +6,37 @@ package config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-/**
- *
- * @author iLeLi
- */
+import java.sql.SQLException;
+
 public class Conexion {
-    Connection conn;
-    String db="jdbc:mysql://localhost:3306/db_tu_tienda";
-    String usuario="root";
-    String contra="";
-    public Connection Conexion(){
-        try{
-            Class.forName("com.myqsl.jdbc.Driver");
-            conn=DriverManager.getConnection(db,usuario,contra);
-        }catch(Exception e){
-            
+    private Connection conn;
+    private final String dbUrl = "jdbc:mysql://localhost/db_tu_tienda";
+    private final String user = "root";
+    private final String password = "";
+
+    public Connection getConexion() throws SQLException {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(dbUrl, user, password);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Failed to load the MySQL JDBC driver.");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println("Failed to establish a database connection.");
+            e.printStackTrace();
+            throw e; // Rethrow the SQLException to notify the caller.
         }
         return conn;
+    }
+
+    public void closeConexion() {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                System.out.println("Failed to close the database connection.");
+                e.printStackTrace();
+            }
+        }
     }
 }
