@@ -17,3 +17,44 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .login-card {
     background-color: #cccccc;
 }
+
+.logout-button{
+    margin-right: 20px;
+}
+
+.contenedor-formulario{
+    border: 2px solid black;
+    padding: 10px 10px 10px 10px;
+}
+
+.index-container{
+    margin-top: 3rem !important;
+}
+
+.boton-formulario{
+    margin-top: 2rem !important;
+    background-color:#45c3c7;
+	border-radius:10px;
+	border:1px solid #00bbff;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:10px 31px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+
+.alerta{
+    margin-top: 1rem !important;
+    background-color: darksalmon;
+}
+
+.main-body{
+    background-image: url("https://static.vecteezy.com/system/resources/previews/032/087/647/non_2x/blurred-modern-business-office-interior-room-use-for-background-in-business-concept-meeting-room-blur-corporate-business-office-and-skyscraper-building-city-view-workspace-design-generative-ai-photo.jpg")
+}
+
+.contenido {
+    background-color: white;
+}

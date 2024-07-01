@@ -11,16 +11,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Objetos.EmpleadoDAO;
 import Objetos.Empleado;
+import Objetos.EmpleadoDAO;
 import javax.servlet.http.Cookie;
 
 /**
  *
  * @author iLeLi
  */
-@WebServlet(name = "InicioSesion", urlPatterns = {"/InicioSesion"})
-public class InicioSesion extends HttpServlet {
+@WebServlet(name = "Reconexion", urlPatterns = {"/Reconexion"})
+public class Reconexion extends HttpServlet {
+    
+    Empleado empleado = new Empleado();
+    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,9 +34,6 @@ public class InicioSesion extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
-    
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -42,10 +42,10 @@ public class InicioSesion extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet InicioSesion</title>");            
+            out.println("<title>Servlet Reconexion</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet InicioSesion at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Reconexion at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,7 +63,35 @@ public class InicioSesion extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        
+        String cookieName = "Sesion";
+        String valor = "";
+        Cookie[] cookies = request.getCookies();
+        boolean existeCookie = false;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookieName.equals(cookie.getName())) {
+                    existeCookie = true;
+                    valor = cookie.getValue();
+                }
+            }
+        }
+
+        if (existeCookie) {
+            Empleado empleado = empleadoDAO.reconectar(valor);
+            if (empleado != null && empleado.getUsuario() != null) {
+                request.setAttribute("usuario",empleado);
+                request.setAttribute("apellidos",empleado);
+                request.getRequestDispatcher("Main.jsp").forward(request, response);
+            } else {
+                response.sendRedirect("index.jsp");
+            }
+        } else {
+            response.sendRedirect("index.jsp");
+        }
+        
     }
 
     /**
@@ -77,47 +105,7 @@ public class InicioSesion extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String accion = request.getParameter("accion");
-        
-        /*try (PrintWriter out = response.getWriter()) {
-             TODO output your page here. You may use following sample code. 
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet InicioSesion</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<p>"+empleado != null && empleado.getUsuario() != null+"</p>");
-            
-            //out.println("<h1>Servlet InicioSesion at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }*/
-        
-        //request.getRequestDispatcher("Controlador").forward(request, response);
-        
-        if (accion != null && accion.equalsIgnoreCase("Entrar")) {
-            String user = request.getParameter("usuario");
-            String contra = request.getParameter("contra");
-            
-            Empleado empleado = empleadoDAO.verificar(user, contra);
-            
-                if (empleado != null && empleado.getUsuario() != null) {
-                    request.setAttribute("usuario",empleado);
-                    request.setAttribute("apellidos",empleado);
-                    String cookieName = "Sesion";
-                    Cookie Sesion = new Cookie(cookieName, request.getParameter("usuario"));
-                    Sesion.setMaxAge(60*60*1);
-                    response.addCookie(Sesion);
-                request.getRequestDispatcher("Main.jsp").forward(request, response);
-                
-            } else {
-                request.setAttribute("error", "Usuario o contraseña incorrecta.");
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-            }
-        } else {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**
