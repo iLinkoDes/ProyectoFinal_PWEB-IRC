@@ -1,0 +1,25 @@
+CREATE TABLE `empleados` (
+  `id_empleado` int(10) UNSIGNED AUTO_INCREMENT,
+  `identificacion_empleado` varchar(8) NOT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  `apellidos` varchar(255) DEFAULT NULL,
+  `telefono` varchar(10) DEFAULT NULL,
+  `activo` varchar(1) DEFAULT NOT NULL,
+  `usuario` varchar(8) DEFAULT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `empleados` (`identificacion_empleado`, `nombre`, `apellidos`, `telefono`, `activo`, `usuario`) VALUES
+('K1234567', 'Carlos', 'Perez', '5512345678', '1', 'cperez'),
+('L2345678', 'Ana', 'Gomez', '5523456789', '1', 'agomez'),
+('M3456789', 'Jose', 'Lopez', '5534567890', '1', 'jlopez'),
+('N4567890', 'Luis', 'Martinez', '5545678901', '1', 'lmartinez'),
+('O5678901', 'Marta', 'Fernandez', '5556789012', '1', 'mfernand'),
+('P6789012', 'Raul', 'Hernandez', '5567890123', '1', 'rhernand'),
+('Q7890123', 'Carmen', 'Garcia', '5578901234', '1', 'cgarcia'),
+('R8901234', 'David', 'Rodriguez', '5589012345', '1', 'drodrigu'),
+('S9012345', 'Laura', 'Sanchez', '5590123456', '1', 'lsanchez'),
+('T0123456', 'Mario', 'Ramirez', '5501234567', '0', 'mramirez');
+
+ALTER TABLE `empleados`
+  ADD PRIMARY KEY (`id_empleado`);
+
